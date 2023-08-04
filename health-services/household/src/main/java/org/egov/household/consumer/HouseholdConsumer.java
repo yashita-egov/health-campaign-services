@@ -35,7 +35,12 @@ public class HouseholdConsumer {
     public List<Household> bulkCreate(Map<String, Object> consumerRecord,
                                       @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
         try {
+            
             HouseholdBulkRequest request = objectMapper.convertValue(consumerRecord, HouseholdBulkRequest.class);
+            
+            log.info("Memory: {}, Free: {}", Runtime.getRuntime().totalMemory(), Runtime.getRuntime().freeMemory());
+            System.out.println("the size of the housholds is " + request.getHouseholds().size());
+            
             return householdService.create(request, true);
         } catch (Exception exception) {
             log.error("error in household consumer bulk create", exception);
